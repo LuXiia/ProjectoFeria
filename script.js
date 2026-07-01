@@ -649,7 +649,7 @@ function drawPacman() {
 // =========================================================================
 // PANTALLA FINAL Y CIERRE DEL JUEGO
 // =========================================================================
-function endGame(isVictory, detailText) {
+async function endGame(isVictory, detailText) {
     gameRunning = false;
     canvas.style.display = "none";
     
@@ -670,6 +670,7 @@ function endGame(isVictory, detailText) {
     document.getElementById("final-score").innerText = score;
     document.getElementById("gameover-screen").style.display = "block";
     
-    saveScoreLocal(playerAlias, score, selectedLabel, selectedMode);
-    loadLeaderboardLocal(selectedMode);
+    // Ahora el código espera de forma ordenada a que Supabase responda
+    await saveScoreLocal(playerAlias, score, selectedLabel, selectedMode);
+    await loadLeaderboardLocal(selectedMode);
 }
