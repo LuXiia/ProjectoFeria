@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michis & Mazmorras - Edición Deluxe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="game-container">
+    <div id="start-screen" class="screen">
+        <div class="title-main">MICHIS & MAZMORRAS</div>
+        <div class="subtitle">~ DELUXE ARCADE ~</div>
+        
+        <label>Ingresa tu Alias:</label>
+        <input type="text" id="player-alias" maxlength="10" placeholder="MICH">
+        
+        <label>Selecciona tu Michi-Skin:</label>
+        <div class="grid-selector" id="skin-selector-container">
+            <div class="selector-card selected" data-skin="negro" data-label="⚫">
+                <span class="card-icon">⚫</span>
+                <span class="card-label">Negrito</span>
+            </div>
+            <div class="selector-card" data-skin="naranja" data-label="🟠">
+                <span class="card-icon">🟠</span>
+                <span class="card-label">Naranjita</span>
+            </div>
+            <div class="selector-card" data-skin="blanco" data-label="⚪">
+                <span class="card-icon">⚪</span>
+                <span class="card-label">Blanquito</span>
+            </div>
+        </div>
+
+        <label>Selecciona la Mazmorra:</label>
+        <div class="grid-selector" id="mode-selector-container">
+            <div class="selector-card selected" data-mode="torre">
+                <span class="card-icon">🏰</span>
+                <span class="card-label">La Torre</span>
+            </div>
+            <div class="selector-card" data-mode="pacman">
+                <span class="card-icon">🌀</span>
+                <span class="card-label">El Laberinto</span>
+            </div>
+        </div>
+
+        <button id="start-btn" type="button">¡INICIAR AVENTURA!</button>
+    </div>
+
+    <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+    <div id="gameover-screen" class="screen" style="display: none;">
+        <h2 id="end-title">GAME OVER</h2>
+        <p id="end-status" style="color: #66A5ED; font-size:14px;"></p>
+        <p style="font-size: 18px; color: #F6C45C;">Puntuación: <span id="final-score">0</span></p>
+        
+        <h3 id="rank-title" style="color: #FFAFEB; margin-bottom: 5px; font-size:14px;">RANKING</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pos</th>
+                    <th>Michi</th>
+                    <th>Alias</th>
+                    <th>Puntos</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+        </table>
+
+        <div class="rating-zone">
+            <span style="font-size: 12px; color: #FFAFEB;">¿Qué te pareció esta Mazmorra?</span>
+            <div class="stars" id="star-container">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+            </div>
+            <p id="rating-thanks" style="display:none; font-size:11px; color:#FFAFEB; margin:5px 0 0 0;">¡Gracias por tu voto! ❤️</p>
+        </div>
+
+        <button id="restart-btn" type="button">VOLVER AL MENÚ</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

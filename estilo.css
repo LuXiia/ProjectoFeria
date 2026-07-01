@@ -1,0 +1,204 @@
+body {
+    background-color: #1a1525;
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+#game-container {
+    position: relative;
+    text-align: center;
+}
+
+canvas {
+    border: 4px solid #F6C45C;
+    background-color: #FFAFEB; 
+    display: none;
+    margin: 0 auto;
+    box-shadow: 0px 0px 20px rgba(219, 62, 140, 0.4);
+}
+
+.screen {
+    background: #2b1f3d;
+    border: 4px solid #7758A3;
+    border-radius: 12px;
+    padding: 25px;
+    width: 440px;
+    box-sizing: border-box;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.7);
+}
+
+.title-main {
+    color: #F6C45C;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-shadow: 3px 3px 0px #DB3E8C;
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: #66A5ED;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 13px;
+    color: #FFAFEB;
+    text-transform: uppercase;
+    text-align: left;
+    letter-spacing: 1px;
+}
+
+input[type="text"] {
+    background: #1a1525;
+    color: #F6C45C;
+    border: 2px solid #7758A3;
+    border-radius: 6px;
+    padding: 10px;
+    font-family: inherit;
+    font-size: 16px;
+    margin-top: 5px;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    box-sizing: border-box;
+}
+
+/* Contenedor de Selección */
+.grid-selector {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    gap: 10px;
+}
+
+.selector-card {
+    flex: 1;
+    cursor: pointer;
+    background: #1a1525;
+    border: 2px solid #7758A3;
+    border-radius: 8px;
+    padding: 12px 5px;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+    user-select: none;
+}
+
+.selector-card:hover {
+    border-color: #66A5ED;
+    background: #221933;
+}
+
+.selector-card.selected {
+    border-color: #F6C45C;
+    background: #7758A3;
+    box-shadow: 0 0 10px rgba(246, 196, 92, 0.3);
+}
+
+.card-icon {
+    font-size: 20px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.card-label {
+    font-size: 11px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.selector-card.selected .card-label {
+    color: #F6C45C;
+}
+
+button {
+    background: #DB3E8C;
+    color: #fff;
+    border: 2px solid #F6C45C;
+    border-radius: 6px;
+    padding: 14px;
+    font-family: inherit;
+    font-size: 16px;
+    margin-top: 25px;
+    width: 100%;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-shadow: 1px 1px 0px #000;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #F6C45C;
+    color: #1a1525;
+}
+
+.rating-zone {
+    margin-top: 15px;
+    background: #1a1525;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px dashed #7758A3;
+}
+
+.stars {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.star {
+    cursor: pointer;
+    font-size: 24px;
+    color: #444;
+    transition: color 0.2s;
+}
+
+.star.active {
+    color: #F6C45C;
+}
+
+table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+    background: #1a1525;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #7758A3;
+}
+
+th {
+    background: #7758A3;
+    color: #F6C45C;
+    font-size: 12px;
+    padding: 8px;
+    text-transform: uppercase;
+}
+
+td {
+    border-bottom: 1px solid #2b1f3d;
+    padding: 8px;
+    font-size: 13px;
+}
+
+.victory-text {
+    color: #F6C45C;
+    font-weight: bold;
+    text-shadow: 2px 2px 0px #DB3E8C;
+}
