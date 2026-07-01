@@ -1,3 +1,13 @@
+// =========================================================================
+// CONFIGURACIÓN DE SUPABASE (CONECTADO A TU BASE DE DATOS)
+// =========================================================================
+const SUPABASE_URL = "https://eakdjtveszrdrcdhimvq.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVha2RqdHZlc3pyZHJjZGhpbXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5MjUyODQsImV4cCI6MjA5ODUwMTI4NH0.sN1CjH5BUi_PTonmHwfeRqD7tXNOarhuNaWH9TFxtmU";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// =========================================================================
+// VARIABLES DEL JUEGO
+// =========================================================================
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -45,7 +55,9 @@ const mazeMap = [
     [1,1,1,1,1,1,1,1,1,1]
 ];
 
-// Eventos de las tarjetas de skins
+// =========================================================================
+// EVENTOS Y ESCUCHADORES (LISTENERS)
+// =========================================================================
 const skinCards = document.querySelectorAll('#skin-selector-container .selector-card');
 skinCards.forEach(card => {
     card.addEventListener('click', () => {
@@ -87,31 +99,47 @@ document.getElementById("restart-btn").addEventListener("click", () => {
     document.getElementById("start-screen").style.display = "block";
 });
 
-function saveScoreLocal(alias, finalScore, label, mode) {
-    let storageKey = (mode === "torre") ? 'michis_rank_torre' : 'michis_rank_laberinto';
-    let leaderboard = JSON.parse(localStorage.getItem(storageKey)) || [];
-    leaderboard.push({ alias, score: finalScore, label: label });
-    leaderboard.sort((a, b) => b.score - a.score);
-    localStorage.setItem(storageKey, JSON.stringify(leaderboard.slice(0, 5)));
+// =========================================================================
+// FUNCIONES DE SUPABASE (RANKING GLOBAL)
+// =========================================================================
+async function saveScoreLocal(alias, finalScore, label, mode) {
+    const { data, error } = await supabaseClient
+        .from('ranking')
+        .insert([{ alias: alias, score: finalScore, label: label, mode: mode }]);
+        
+    if (error) console.error("Error al guardar en Supabase:", error);
 }
 
-function loadLeaderboardLocal(mode) {
-    let storageKey = (mode === "torre") ? 'michis_rank_torre' : 'michis_rank_laberinto';
-    let leaderboard = JSON.parse(localStorage.getItem(storageKey)) || [];
-    
+async function loadLeaderboardLocal(mode) {
+    const { data: leaderboard, error } = await supabaseClient
+        .from('ranking')
+        .select('*')
+        .eq('mode', mode)
+        .order('score', { ascending: false })
+        .limit(5);
+
+    if (error) {
+        console.error("Error al cargar de Supabase:", error);
+        return;
+    }
+
     document.getElementById("rank-title").innerText = `TOP 5 RANKING: ${mode === "torre" ? "LA TORRE" : "EL LABERINTO"}`;
     const tbody = document.getElementById("leaderboard-body");
     tbody.innerHTML = "";
     
-    if (leaderboard.length === 0) {
+    if (!leaderboard || leaderboard.length === 0) {
         tbody.innerHTML = `<tr><td colspan="4">¡Ningún michi clasificó aún!</td></tr>`;
         return;
     }
+    
     leaderboard.forEach((row, index) => {
         tbody.innerHTML += `<tr><td>${index + 1}</td><td style='font-size:14px;'>${row.label || '⚫'}</td><td>${row.alias}</td><td>${row.score}</td></tr>`;
     });
 }
 
+// =========================================================================
+// MECÁNICAS E INICIALIZACIÓN DEL JUEGO
+// =========================================================================
 function startGame() {
     const input = document.getElementById("player-alias");
     playerAlias = input.value.trim().toUpperCase() || "MICH";
@@ -370,7 +398,7 @@ function updateTorre() {
             if (player.vy > 0 && (player.y + player.height - player.vy) <= enemy.y + 6) {
                 enemies.splice(index, 1); 
                 player.vy = -6.5; 
-                score += 100;    
+                score += 100;     
             } else {
                 endGame(false, "Derrotado en la torre");
             }
@@ -380,7 +408,6 @@ function updateTorre() {
     if (player.y + cameraY > canvas.height) endGame(false, "Caída al vacío");
 }
 
-/* Mecánicas del Modo Laberinto */
 function updatePacman() {
     let vx = 0;
     let vy = 0;
@@ -445,7 +472,9 @@ function updatePacman() {
     }
 }
 
-/* Funciones de Renderizado en Canvas */
+// =========================================================================
+// RENDERIZADO GRÁFICO (CANVAS)
+// =========================================================================
 function drawGatitoBrujo(x, y) {
     const sprite = [
         [0,0,0,0,0,2,2,0,0,0,0,0],
@@ -617,6 +646,9 @@ function drawPacman() {
     ctx.fillText(`MAZMORRA: EL LABERINTO`, 170, 585);
 }
 
+// =========================================================================
+// PANTALLA FINAL Y CIERRE DEL JUEGO
+// =========================================================================
 function endGame(isVictory, detailText) {
     gameRunning = false;
     canvas.style.display = "none";
